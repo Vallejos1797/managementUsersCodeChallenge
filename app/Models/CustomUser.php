@@ -14,6 +14,7 @@ class CustomUser extends Model
 
     protected $fillable = [
         'username',
+        'email',
         'firstName',
         'secondName',
         'lastName',
