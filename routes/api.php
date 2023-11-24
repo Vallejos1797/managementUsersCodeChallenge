@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\API\CustomUserController;
+use App\Http\Controllers\API\DepartmentController;
+use App\Http\Controllers\API\PositionController;
 use App\Http\Controllers\CustomUsersController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +22,8 @@ Route::apiResource('customUsers', CustomUsersController::class)->except(['destro
 Route::delete('/customUsers/{customUser}', [CustomUsersController::class, 'destroy'])->name('customUsers.destroy');
 Route::put('/customUsers/{customUser}/restore', [CustomUsersController::class, 'restore'])->name('customUsers.restore');
 Route::patch('/customUsers/{customUser}/updateField', [CustomUsersController::class, 'updateField'])->name('customUsers.updateField');
+
+
+Route::resource('departments', DepartmentController::class);
+Route::resource('positions', PositionController::class);
+Route::resource('customUser', CustomUserController::class);

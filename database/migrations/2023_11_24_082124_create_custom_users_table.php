@@ -15,15 +15,21 @@ return new class extends Migration
     {
         Schema::create('custom_users', function (Blueprint $table) {
             $table->id();
-            $table->string('user');
+            $table->string('username');
+            $table->string('email');
             $table->string('firstName');
             $table->string('secondName')->nullable();
             $table->string('lastName');
-            $table->string('secondLastname')->nullable();
-            $table->string('idDeparture')->nullable();
-            $table->string('idBusinessPosition')->nullable();
+            $table->string('secondLastName')->nullable();
+            $table->unsignedBigInteger('departmentId')->nullable();
+            $table->unsignedBigInteger('positionId')->nullable();
             $table->timestamps();
-            $table->softDeletes(); // Agregamos la columna 'deleted_at' para SoftDeletes
+            $table->softDeletes(); // Elimina esta línea
+
+
+            // Foreign keys
+            $table->foreign('departmentId')->references('id')->on('departments');
+            $table->foreign('positionId')->references('id')->on('positions');
         });
     }
 
