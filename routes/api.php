@@ -15,4 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('customUsers', [CustomUsersController::class, 'store']);
+
+Route::apiResource('customUsers', CustomUsersController::class)->except(['destroy']);
+Route::delete('/customUsers/{customUser}', [CustomUsersController::class, 'destroy'])->name('customUsers.destroy');
+Route::put('/customUsers/{customUser}/restore', [CustomUsersController::class, 'restore'])->name('customUsers.restore');
+Route::patch('/customUsers/{customUser}/updateField', [CustomUsersController::class, 'updateField'])->name('customUsers.updateField');

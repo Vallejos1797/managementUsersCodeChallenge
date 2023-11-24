@@ -13,7 +13,9 @@ class CustomUsers extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public $fillable = ['user', 'firstName', 'secondName', 'lastName', 'secondLastname', 'idDeparture', 'idBusinessPosition'];
+    protected $fillable = ['user', 'firstName', 'secondName', 'lastName', 'secondLastname', 'idDeparture', 'idBusinessPosition'];
+    protected $dates = ['deleted_at'];
+
     public const VALIDATIONS = [
         'user'=>'required|min:4|max:100',
         'firstName'=>'required|min:10|max:30',
