@@ -18,19 +18,34 @@ class CustomUserController extends Controller
      */
     public function index(Request $request)
     {
-        $query = CustomUser::orderByDesc('id');
+        $query = CustomUser::orderByDesc('id')
+            ->with(['department:id,name', 'position:id,name']); // Cargar las relaciones department y position
 
         $search = $request->query('search');
-        if ($search) {
-            $query->where('user', 'like', "%{$search}%")
-                ->orWhere('first_name', 'like', "%{$search}%")
-                ->orWhere('last_name', 'like', "%{$search}%");
-        }
+        $department = $request->query('departmentId');
+        $position = $request->query('positionId');
+
+        $query->when($department, function ($q) use ($department) {
+            return $q->where('departmentId', $department);
+        });
+
+        $query->when($position, function ($q) use ($position) {
+            return $q->where('positionId', $position);
+        });
+
+        $query->when($search, function ($q) use ($search) {
+            return $q->where(function ($query) use ($search) {
+                $query->where('user', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%");
+            });
+        });
 
         $perPage = $request->query('per_page', 10);
+        $pageIndex = $request->query('page', 1);
 
-        return CustomUserResource::collection($query->paginate($perPage));
+        return CustomUserResource::collection($query->paginate($perPage, ['*'], 'page', $pageIndex));
     }
+
 
     /**
      * Store a newly created resource in storage.

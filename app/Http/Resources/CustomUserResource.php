@@ -22,8 +22,18 @@ class CustomUserResource extends JsonResource
             'secondName' => $this->secondName,
             'lastName' => $this->lastName,
             'secondLastName' => $this->secondLastName,
-            'departmentId' => $this->departmentId,
-            'positionId' => $this->positionId,
+            'department' => [
+                'id' => $this->departmentId,
+                'name' => $this->whenLoaded('department', function () {
+                    return $this->department->name;
+                }),
+            ],
+            'position' => [
+                'id' => $this->positionId,
+                'name' => $this->whenLoaded('position', function () {
+                    return $this->position->name;
+                }),
+            ],
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

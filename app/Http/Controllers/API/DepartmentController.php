@@ -18,7 +18,7 @@ class DepartmentController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Department::orderByDesc('id');
+        $query = Department::orderBy('id');
 
         $search = $request->query('search');
         if ($search) {
@@ -27,7 +27,9 @@ class DepartmentController extends Controller
         }
 
         $perPage = $request->query('per_page', 10);
-
+        if ($perPage == -1) {
+            return DepartmentResource::collection($query->get());
+        }
         return DepartmentResource::collection($query->paginate($perPage));
     }
 
